@@ -31,6 +31,12 @@ const run = async rl => {
       method: "POST",
       body: { username, password }
     });
+
+    if (!api) {
+      console.log({ username, token });
+      process.exit(0)
+    }
+
     const code = await ask(rl, "code? ");
     const res = await fetchJSON({
       url: `/api${api}`,
