@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "composable-fetch": "^4.1.0",
+    "node-fetch": "^2.3.0"
+  }
+}
