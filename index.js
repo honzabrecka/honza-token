@@ -6,7 +6,6 @@ const { composableFetch, pipeP } = require("composable-fetch");
 global.Headers = Headers;
 
 const fetchJSON = pipeP(
-  composableFetch.withBaseUrl("https://honzabrecka.com"),
   composableFetch.withHeader("Content-Type", "application/json"),
   composableFetch.withHeader("Accept", "application/json"),
   composableFetch.withEncodedBody(JSON.stringify),
@@ -24,10 +23,11 @@ const ask = (rl, question) =>
 
 const run = async rl => {
   try {
+    const apiUrl = await ask(rl, "api? ") || "https://honzabrecka.com";
     const username = await ask(rl, "username? ");
     const password = await ask(rl, "password? ");
     const { token, api } = await fetchJSON({
-      url: "/api/auth/token",
+      url: `${apiUrl}/api/auth/token`,
       method: "POST",
       body: { username, password }
     });
@@ -39,7 +39,7 @@ const run = async rl => {
 
     const code = await ask(rl, "code? ");
     const res = await fetchJSON({
-      url: `/api${api}`,
+      url: `${apiUrl}/api${api}`,
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: { code }
